@@ -13,7 +13,11 @@ macx: {
     INCLUDEPATH += /usr/include/eigen3
 }
 
+INCLUDEPATH += include
+
 HEADERS += \
-    include/opengnc/estimation/unscented_transform.hpp
+    include/opengnc/estimation/unscented_transform.hpp \
+    include/opengnc/estimation/models/measurement/gps.hpp \
+    include/opengnc/common/transforms/wgs84.hpp
 
 
