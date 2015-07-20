@@ -1,11 +1,11 @@
-#ifndef OGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
-#define OGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
+#ifndef OPENGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
+#define OPENGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
 
 #include <stdexcept>
 #include <Eigen/Core>
 #include <boost/asio.hpp>
 
-namespace ognc {
+namespace opengnc {
 namespace estimation {
 
 template <typename model_type>
@@ -151,6 +151,6 @@ protected:
     w_vec _wc;
 };
 
-} // estimation
-} // ognc
-#endif // OGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
+}
+}
+#endif // OPENGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
