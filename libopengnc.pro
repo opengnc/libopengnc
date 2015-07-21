@@ -14,6 +14,7 @@ macx: {
 }
 
 HEADERS += \
-    include/opengnc/estimation/unscented_transform.hpp
+    include/opengnc/estimation/unscented_transform.hpp \
+    include/opengnc/estimation/time_update.hpp
 
 
