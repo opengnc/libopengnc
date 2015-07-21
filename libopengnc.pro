@@ -21,7 +21,9 @@ HEADERS += \
     include/opengnc/estimation/models/measurement/gps.hpp \
     include/opengnc/common/transforms/wgs84.hpp \
     include/opengnc/common/first_order_density.hpp \
-    include/opengnc/estimation/measurement_update.hpp
+    include/opengnc/estimation/measurement_update.hpp \
+    include/opengnc/estimation/models/process/rigid_body/constant_acceleration.hpp \
+    include/opengnc/estimation/models/process/rigid_body/dwna_covariance_policy.hpp
 
 
 
