@@ -11,7 +11,9 @@ template<typename density_type,
 class time_update : constraint_policy
 {
 public:
-    time_update() { }
+    time_update(process_model_type& model)
+        : _model(model)
+    { }
 
     void operator () (density_type& density)
     {
@@ -22,7 +24,7 @@ public:
     }
 
 protected:
-    process_model_type _model;
+    process_model_type& _model;
     propagater_type _propagater;
 };
 
