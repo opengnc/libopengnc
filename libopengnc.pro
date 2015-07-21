@@ -23,7 +23,8 @@ HEADERS += \
     include/opengnc/common/first_order_density.hpp \
     include/opengnc/estimation/measurement_update.hpp \
     include/opengnc/estimation/models/process/rigid_body/constant_acceleration.hpp \
-    include/opengnc/estimation/models/process/rigid_body/dwna_covariance_policy.hpp
+    include/opengnc/estimation/models/process/rigid_body/dwna_covariance_policy.hpp \
+    include/opengnc/estimation/no_constraint_policy.hpp
 
 
 
