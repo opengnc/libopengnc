@@ -20,10 +20,11 @@ protected:
 	Matrix3s _Ren;
 
 public:
-    enum { output_length = 3 };
-    typedef double scalar_type;
+    enum { input_length = state_policy::state_vector_length, output_length = 3 };
+    typedef double output_scalar_type;
+    typedef typename state_policy::scalar_type input_scalar_type;
     typedef Eigen::Vector3d YVector;
-	typedef Eigen::Matrix<typename state_policy::scalar_type, state_policy::state_vector_length, 1> XVector;
+    typedef Eigen::Matrix<input_scalar_type, input_length, 1> XVector;
 
     gps()
         : _initialised(false)
