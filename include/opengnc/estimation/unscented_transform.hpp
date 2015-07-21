@@ -18,15 +18,18 @@ public:
         nsigma = 2*model_type::input_length +1
     };
 
-    typedef Eigen::Matrix<double,nx,1> x_vec;
-    typedef Eigen::Matrix<double,nx,nx> x_mat;
-    typedef Eigen::Matrix<double,ny,1> y_vec;
-    typedef Eigen::Matrix<double,ny,ny> y_mat;
-    typedef Eigen::Matrix<double,ny,ny> xy_mat;
-    typedef Eigen::Matrix<double,nsigma,1> w_vec;
-    typedef Eigen::Matrix<double,nsigma,nsigma> w_mat;
-    typedef Eigen::Matrix<double,nx,nsigma> sigma_x_mat;
-    typedef Eigen::Matrix<double,ny,nsigma> sigma_y_mat;
+    typedef typename model_type::input_scalar_type input_scalar_type;
+    typedef typename model_type::input_scalar_type output_scalar_type;
+
+    typedef Eigen::Matrix<input_scalar_type, nx, 1> x_vec;
+    typedef Eigen::Matrix<input_scalar_type, nx, nx> x_mat;
+    typedef Eigen::Matrix<output_scalar_type, ny, 1> y_vec;
+    typedef Eigen::Matrix<output_scalar_type, ny, ny> y_mat;
+    typedef Eigen::Matrix<output_scalar_type, ny, ny> xy_mat;
+    typedef Eigen::Matrix<output_scalar_type, nsigma, 1> w_vec;
+    typedef Eigen::Matrix<output_scalar_type, nsigma, nsigma> w_mat;
+    typedef Eigen::Matrix<input_scalar_type, nx, nsigma> sigma_x_mat;
+    typedef Eigen::Matrix<output_scalar_type, ny, nsigma> sigma_y_mat;
 
     unscented_transform()
      : _init(false)
