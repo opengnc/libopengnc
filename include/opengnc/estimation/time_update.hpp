@@ -15,15 +15,15 @@ public:
 
     void operator () (density_type& density)
     {
-        propagater.init(density.mean(), density.covariance());
-        propagater.propagate(model, density.mean(), density.covariance());
+        _propagater.init(density.mean(), density.covariance());
+        _propagater.propagate(_model, density.mean(), density.covariance());
         constraint_policy::apply(density.mean());
-        density.covariance() = density.covariance() + model.uncertainty(density.mean());
+        density.covariance() = density.covariance() + _model.uncertainty(density.mean());
     }
 
 protected:
-    process_model_type model;
-    propagater_type propagater;
+    process_model_type _model;
+    propagater_type _propagater;
 };
 
 }
