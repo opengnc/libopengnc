@@ -17,11 +17,9 @@ INCLUDEPATH += include
 
 HEADERS += \
     include/opengnc/estimation/unscented_transform.hpp \
-<<<<<<< HEAD
-    include/opengnc/estimation/time_update.hpp
-=======
+    include/opengnc/estimation/time_update.hpp \
     include/opengnc/estimation/models/measurement/gps.hpp \
     include/opengnc/common/transforms/wgs84.hpp
->>>>>>> 42a62494aefc7983aa22e265ff8c3610d12e853c
+
 
 
