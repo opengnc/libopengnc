@@ -24,8 +24,9 @@ class measurement_update
     typedef Eigen::Matrix<double, nx, ny> xy_mat;
 
 public:
-    measurement_update(measurement_service_type& measurement_service)
+    measurement_update(measurement_service_type& measurement_service, measurement_model_type& model)
         : _measurement_service(measurement_service)
+        , _model(model)
     { }
 
     void operator () (density_type& density)
@@ -66,8 +67,8 @@ public:
     }
 
 private:
-    measurement_service_type _measurement_service;
-    measurement_model_type _model;
+    measurement_service_type& _measurement_service;
+    measurement_model_type& _model;
     propagater_type _propagater;
 };
 
