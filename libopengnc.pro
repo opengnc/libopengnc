@@ -20,7 +20,8 @@ HEADERS += \
     include/opengnc/estimation/time_update.hpp \
     include/opengnc/estimation/models/measurement/gps.hpp \
     include/opengnc/common/transforms/wgs84.hpp \
-    include/opengnc/common/first_order_density.hpp
+    include/opengnc/common/first_order_density.hpp \
+    include/opengnc/estimation/measurement_update.hpp
 
 
 
