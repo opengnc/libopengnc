@@ -59,7 +59,8 @@ public:
         //IMU bias dynamics
         auto dbiasIMU = Vector3s::Zero();
 
-        x_vec dx = state_policy::packState(drBNn,dthetanb,dvBNb,domegaBNb,dbiasIMU);
+        x_vec dx;
+        state_policy::packState(dx, drBNn,dthetanb,dvBNb,domegaBNb,dbiasIMU);
 
         y_vec x_hat = x + _timestep*dx;
         state_policy::apply_contraints(x_hat);
