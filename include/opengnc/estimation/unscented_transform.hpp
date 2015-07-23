@@ -72,8 +72,8 @@ public:
         x_mat S = Px.llt().matrixL();
 
         for (int i=0; i<n; i++) {
-            _sigma_points.col(i) = x + _gamma*S.col(i);
-            _sigma_points.col(i+n) = x - _gamma*S.col(i);
+            _sigma_x.col(i) = x + _gamma*S.col(i);
+            _sigma_x.col(i+n) = x - _gamma*S.col(i);
         }
 
         _sigma_x.col(2*n) = x;
@@ -117,7 +117,7 @@ protected:
           y_vec yi = model(xi);
 
           if (yi.size() > _sigma_y.rows()) {
-              _sigma_y.conservativeResize(y_i.size(), xi.size());
+              _sigma_y.conservativeResize(yi.size(), xi.size());
 
               for (int col = 0; col < _sigma_y.cols(); ++col)
               for (int row = _sigma_y.rows(); row < yi.size(); ++row) {
