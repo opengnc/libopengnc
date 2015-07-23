@@ -12,7 +12,7 @@ namespace rigid_body {
 template<typename state_policy, typename covariance_policy>
 class constant_acceleration
         : state_policy
-        , constant_acceleration
+        , covariance_policy
 {
 public:
     enum { input_length = state_policy::state_vector_length, output_length = state_policy::state_vector_length };
@@ -21,8 +21,8 @@ public:
     typedef typename state_policy::scalar_type output_scalar_type;
 
     typedef Eigen::Matrix<input_scalar_type, input_length, 1> x_vec;
-    typedef Eigen::Matrix<output_length, output_scalar_type, 1> y_vec;
-    typedef Eigen::Matrix<output_length, output_scalar_type, output_scalar_type> y_mat;
+    typedef Eigen::Matrix<output_scalar_type, output_length, 1> y_vec;
+    typedef Eigen::Matrix<output_scalar_type, output_length, output_length> y_mat;
 
     typedef typename covariance_policy::param_type param_type;
 
@@ -36,6 +36,8 @@ public:
 
     y_vec operator() (const x_vec& x)
     {
+        typedef Eigen::Matrix<input_scalar_type,Eigen::Dynamic,1> VectorXs;
+
         auto thetanb  = state_policy::thetanb(x);
         auto vBNb = state_policy::vBNb(x);
         auto omegaBnb = state_policy::omegaBnb(x);
@@ -57,7 +59,7 @@ public:
         domegaBNb.setConstant(0);
 
         //IMU bias dynamics
-        auto dbiasIMU = Vector3s::Zero();
+        VectorXs dbiasIMU = VectorXs::Zero(state_policy::parameters_length());
 
         x_vec dx;
         state_policy::packState(dx, drBNn,dthetanb,dvBNb,domegaBNb,dbiasIMU);
