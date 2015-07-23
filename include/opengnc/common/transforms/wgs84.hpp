@@ -1,6 +1,7 @@
 #ifndef OPENGNC_COMMON_TRANSFORMS_WGS84_HPP
 #define OPENGNC_COMMON_TRANSFORMS_WGS84_HPP
 
+#include <cmath>
 #include <Eigen/Core>
 
 namespace opengnc {
@@ -14,7 +15,8 @@ private:
 	static constexpr double f = 0.00335281;
 	static constexpr double b = 6356752.3142;
 	static constexpr double e = 0.08181919;
-	static constexpr double edash = std::sqrt((std::pow(wgs84::a, 2) - std::pow(wgs84::b, 2)) / (std::pow(wgs84::b, 2)));
+        static constexpr double edash = 1.416594330341819094455774657555371506719980852077498554231477;
+                //std::sqrt((std::pow(wgs84::a, 2) - std::pow(wgs84::b, 2)) / (std::pow(wgs84::b, 2)));
 
 public:
 	static Eigen::Vector3d geodetic_to_rectangular(const Eigen::Vector3d& gps)
@@ -64,7 +66,7 @@ public:
 	}
 
         template <typename scalar=double>
-	static Eigen::Matrix<scalar,3,1> Ren_from_geodetic(const Eigen::Vector3d& gps)
+        static Eigen::Matrix<scalar,3,3> Ren_from_geodetic(const Eigen::Vector3d& gps)
 	{
 		const double& phi = gps[0] * M_PI / 180;
 		const double& lambda = gps[1] * M_PI / 180;
@@ -72,16 +74,16 @@ public:
 		const double theta_z = lambda;
 		const double theta_y = -M_PI/2 - phi;
 
-		Eigen::Matrix<scalar,3,1> Rz, Ry, Ren;
-		Rz <<   std::cos(theta_z),  std::sin(theta_z),  0,
-				-std::sin(theta_z), std::cos(theta_z),  0,
-				0, 0, 1;
+                Eigen::Matrix<scalar,3,3> Rz, Ry, Ren;
+                Rz <<   std::cos(theta_z),  std::sin(theta_z),  0,
+                                -std::sin(theta_z), std::cos(theta_z),  0,
+                                0, 0, 1;
 
-		Ry <<   std::cos(theta_y),  0,  -std::sin(theta_y),
-				0, 1, 0,
-				std::sin(theta_y),  0,  std::cos(theta_y);
+                Ry <<   std::cos(theta_y),  0,  -std::sin(theta_y),
+                                0, 1, 0,
+                                std::sin(theta_y),  0,  std::cos(theta_y);
 
-		Ren = Rz.transpose() * Ry.transpose();
+                Ren = Rz.transpose() * Ry.transpose();
 
 		return Ren;
 	}
