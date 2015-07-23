@@ -45,7 +45,7 @@ public:
     YVector operator() (const XVector& x) const
     {
 		Eigen::Matrix<typename state_policy::scalar_type, 3, 1> rBNe = _Ren * state_policy::rBNn(x);
-		Eigen::Matrix<scalar_type, 3, 1> rBOe;// = rBNe.cast<double>() + _rNOe;
+		Eigen::Matrix<output_scalar_type, 3, 1> rBOe;// = rBNe.cast<double>() + _rNOe;
 
         return opengnc::common::transforms::wgs84::rectangular_to_geodetic(rBOe);
     }
