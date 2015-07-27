@@ -70,7 +70,7 @@ public:
         return x_hat;
     }
 
-    y_mat covariance(const x_vec& x)
+    y_mat uncertainty(const x_vec& x)
     {
         return covariance_policy::apply(x, _timestep, _params);
     }
