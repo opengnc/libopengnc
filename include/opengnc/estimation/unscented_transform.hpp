@@ -134,7 +134,7 @@ protected:
         Py = Delta_sigma_y * _wc.asDiagonal() * Delta_sigma_y.transpose();
 
         if (calc_cross) {
-            x_vec& x = static_cast<const x_vec&>(_sigma_x.col(_sigma_x.cols() - 1));
+            const x_vec& x = static_cast<const x_vec&>(_sigma_x.col(_sigma_x.cols() - 1));
             sigma_x_mat Delta_sigma_x = _sigma_x.colwise() - x;
             Pxy = Delta_sigma_x * _wc.asDiagonal() * Delta_sigma_y.transpose();
         }
