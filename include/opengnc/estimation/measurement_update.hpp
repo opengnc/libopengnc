@@ -19,9 +19,12 @@ class measurement_update
 {
     enum { nx = measurement_model_type::input_length, ny = measurement_model_type::output_length };
 
-    typedef Eigen::Matrix<double, ny, 1> y_vec;
-    typedef Eigen::Matrix<double, ny, ny> y_mat;
-    typedef Eigen::Matrix<double, nx, ny> xy_mat;
+    typedef typename measurement_model_type::input_scalar_type input_scalar_type;
+    typedef typename measurement_model_type::output_scalar_type output_scalar_type;
+
+    typedef Eigen::Matrix<output_scalar_type, ny, 1> y_vec;
+    typedef Eigen::Matrix<output_scalar_type, ny, ny> y_mat;
+    typedef Eigen::Matrix<output_scalar_type, nx, ny> xy_mat;
 
 public:
     measurement_update(measurement_service_type& measurement_service, measurement_model_type& model)
@@ -38,7 +41,7 @@ public:
         y_mat Py_hat;
         xy_mat Pxy_hat;
 
-        _propagater.init(x, Px, true);
+        _propagater.init(x, Px);
         _propagater.propagate(_model, y_hat, Py_hat, Pxy_hat);
 
         y_vec y = _measurement_service.get_measurement();
@@ -56,10 +59,10 @@ public:
         if(y.rows() > 0 && y_hat.rows() > 0)
         {
             //Conditioning: K = Pxy/Py
-            auto K = Py_hat.ldlt().solve(Pxy_hat.transpose()).transpose();
+            xy_mat K = Py_hat.ldlt().solve(Pxy_hat.transpose()).transpose();
 
-            density.mean() = x + K*(y - y_hat);
-            density.covariance() = Px - K*Py_hat*K.transpose();
+            density.mean() = x + (K*(y - y_hat)).template cast<typename density_type::scalar_type>();
+            density.covariance() = Px - (K*Py_hat*K.transpose()).template cast<typename density_type::scalar_type>();
 
             //Apply Constaints
             constraint_policy::apply(density.mean());
