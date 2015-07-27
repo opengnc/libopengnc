@@ -26,8 +26,8 @@ public:
     const vec_type& mean() const { return _mean; }
     vec_type& mean() { return _mean; }
 
-    const mat_type& convariance() const { return _covariance; }
-    mat_type& convariance() { return _covariance; }
+    const mat_type& covariance() const { return _covariance; }
+    mat_type& covariance() { return _covariance; }
 
 private:
     vec_type _mean;
