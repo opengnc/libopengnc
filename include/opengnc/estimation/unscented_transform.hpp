@@ -25,7 +25,7 @@ public:
     typedef Eigen::Matrix<input_scalar_type, nx, nx> x_mat;
     typedef Eigen::Matrix<output_scalar_type, ny, 1> y_vec;
     typedef Eigen::Matrix<output_scalar_type, ny, ny> y_mat;
-    typedef Eigen::Matrix<output_scalar_type, ny, ny> xy_mat;
+    typedef Eigen::Matrix<output_scalar_type, nx, ny> xy_mat;
     typedef Eigen::Matrix<output_scalar_type, nsigma, 1> w_vec;
     typedef Eigen::Matrix<output_scalar_type, nsigma, nsigma> w_mat;
     typedef Eigen::Matrix<input_scalar_type, nx, nsigma> sigma_x_mat;
