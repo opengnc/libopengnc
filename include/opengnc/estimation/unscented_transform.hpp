@@ -8,8 +8,15 @@
 namespace opengnc {
 namespace estimation {
 
-template <typename model_type>
+template <typename model_type, typename constaint_policy>
 class unscented_transform {
+
+    template<int R>
+    struct sigma_y_mat_traits
+    {
+        static constexpr int rows = R;
+    };
+
 public:
     enum
     {
@@ -72,8 +79,15 @@ public:
         x_mat S = Px.llt().matrixL();
 
         for (int i=0; i<n; i++) {
-            _sigma_x.col(i) = x + _gamma*S.col(i);
-            _sigma_x.col(i+n) = x - _gamma*S.col(i);
+
+            x_vec left = x + _gamma*S.col(i);
+            x_vec right = x - _gamma*S.col(i);
+
+            constaint_policy::apply_constraints(left);
+            constaint_policy::apply_constraints(right);
+
+            _sigma_x.col(i) = left;
+            _sigma_x.col(i+n) = right;
         }
 
         _sigma_x.col(2*n) = x;
@@ -102,6 +116,18 @@ public:
     }
 
 protected:
+
+    template<int ny>
+    void _resize(int, int, sigma_y_mat_traits<ny>)
+    {
+
+    }
+
+    void _resize(int rows, int cols, sigma_y_mat_traits<Eigen::Dynamic>)
+    {
+        _sigma_y.conservativeResize(rows, cols);
+    }
+
     void _propagate(model_type& model, y_vec& y, y_mat& Py, xy_mat& Pxy, bool calc_cross)
     {
         if (!_init) {
@@ -116,8 +142,8 @@ protected:
           const x_vec& xi = static_cast<const x_vec&>(_sigma_x.col(i));
           y_vec yi = model(xi);
 
-          if (yi.size() > _sigma_y.rows()) {
-              _sigma_y.conservativeResize(yi.size(), xi.size());
+          if (ny == Eigen::Dynamic && yi.size() > _sigma_y.rows()) {
+               _resize(yi.size(), _sigma_x.cols(), sigma_y_mat_traits<ny>());
 
               for (int col = 0; col < _sigma_y.cols(); ++col)
               for (int row = _sigma_y.rows(); row < yi.size(); ++row) {
