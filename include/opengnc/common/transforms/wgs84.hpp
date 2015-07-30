@@ -15,8 +15,7 @@ private:
 	static constexpr double f = 0.00335281;
 	static constexpr double b = 6356752.3142;
 	static constexpr double e = 0.08181919;
-        static constexpr double edash = 1.416594330341819094455774657555371506719980852077498554231477;
-                //std::sqrt((std::pow(wgs84::a, 2) - std::pow(wgs84::b, 2)) / (std::pow(wgs84::b, 2)));
+	static constexpr double edash = 0.082094438036854;
 
 public:
 	static Eigen::Vector3d geodetic_to_rectangular(const Eigen::Vector3d& gps)
@@ -65,8 +64,8 @@ public:
 		return gps;
 	}
 
-        template <typename scalar=double>
-        static Eigen::Matrix<scalar,3,3> Ren_from_geodetic(const Eigen::Vector3d& gps)
+	template <typename scalar=double>
+	static Eigen::Matrix<scalar,3,3> Ren_from_geodetic(const Eigen::Vector3d& gps)
 	{
 		const double& phi = gps[0] * M_PI / 180;
 		const double& lambda = gps[1] * M_PI / 180;
