@@ -36,7 +36,6 @@ public:
     y_vec operator() (const x_vec& x)
     {
         typedef Eigen::Matrix<input_scalar_type,Eigen::Dynamic,1> VectorXs;
-        typedef Eigen::Matrix<input_scalar_type,Eigen::Dynamic,Eigen::Dynamic> MatrixXs;
 
         using namespace Eigen;
 
