@@ -2,7 +2,6 @@
 #define OPENGNC_COMMON_TRANSFORMS_WGS84_HPP
 
 #include <cmath>
-#include <iostream>
 #include <Eigen/Core>
 
 namespace opengnc {
