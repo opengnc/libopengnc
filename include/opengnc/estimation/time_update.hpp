@@ -19,7 +19,7 @@ public:
     {
         _propagater.init(density.mean(), density.covariance());
         _propagater.propagate(_model, density.mean(), density.covariance());
-        constraint_policy::apply(density.mean());
+        constraint_policy::apply_constraints(density.mean());
         density.covariance() = density.covariance() + _model.uncertainty(density.mean());
     }
 

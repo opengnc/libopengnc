@@ -11,11 +11,9 @@ template<typename density_type,
          typename measurement_model_type,
          typename measurement_service_type,
          typename propagater_type,
-         typename exclusion_policy,
          typename constraint_policy>
 class measurement_update
-        : exclusion_policy
-        , constraint_policy
+        : constraint_policy
 {
     enum { nx = measurement_model_type::input_length, ny = measurement_model_type::output_length };
 
@@ -44,6 +42,8 @@ public:
         _propagater.init(x, Px);
         _propagater.propagate(_model, y_hat, Py_hat, Pxy_hat);
 
+        _y_hat = y_hat;
+
         y_vec y = _measurement_service.get_measurement();
         y_mat R = _measurement_service.get_measurement_uncertainty();
 
@@ -51,9 +51,6 @@ public:
         {
             //Add measurement noise
             Py_hat +=  R;
-
-            //Apply Exclusions
-            exclusion_policy::apply(y, y_hat, Py_hat, Pxy_hat);
         }
 
         if(y.rows() > 0 && y_hat.rows() > 0)
@@ -65,14 +62,18 @@ public:
             density.covariance() = Px - (K*Py_hat*K.transpose()).template cast<typename density_type::scalar_type>();
 
             //Apply Constaints
-            constraint_policy::apply(density.mean());
+            constraint_policy::apply_constraints(density.mean());
         }
     }
+
+    const y_vec& predicted_measurement() const { return _y_hat; }
+
 
 private:
     measurement_service_type& _measurement_service;
     measurement_model_type& _model;
     propagater_type _propagater;
+    y_vec _y_hat;
 };
 
 }
