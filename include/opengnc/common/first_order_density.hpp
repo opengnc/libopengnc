@@ -6,15 +6,15 @@
 namespace opengnc {
 namespace common {
 
-template<typename scalar_t, int nx=Eigen::Dynamic>
+template<typename scalar_t=double, int nx=Eigen::Dynamic>
 class first_order_density {
 public:
 
     enum { size = nx };
 
     typedef scalar_t scalar_type;
-    typedef Eigen::Matrix<double, size, 1> vec_type;
-    typedef Eigen::Matrix<double, size, size> mat_type;
+	typedef Eigen::Matrix<scalar_t, size, 1> vec_type;
+	typedef Eigen::Matrix<scalar_t, size, size> mat_type;
 
     first_order_density() { }
 
