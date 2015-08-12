@@ -34,31 +34,28 @@ public:
         const auto& x = state_density.mean();
         const auto& Px = state_density.covariance();
 
-        y_vec y_hat;
         y_mat Py_hat;
         xy_mat Pxy_hat;
 
         _propagater.init(x, Px);
-        _propagater.propagate(_model, y_hat, Py_hat, Pxy_hat);
+        _propagater.propagate(_model, _y_hat_used, Py_hat, Pxy_hat);
 
-        y_vec y = measurement_density.mean();
+        _y_used = measurement_density.mean();
         const y_mat& R = measurement_density.covariance();
 
-        if(y.rows() > 0 && y_hat.rows() > 0)
+        if(_y_used.rows() > 0 && _y_hat_used.rows() > 0)
         {
             //Add measurement noise
             Py_hat +=  R;
-            measurement_exclusion_policy::apply_exclusions(y, y_hat, Py_hat, Pxy_hat);
+            measurement_exclusion_policy::apply_exclusions(_y_used, _y_hat_used, Py_hat, Pxy_hat);
         }
 
-        _y_hat = y_hat;
-
-        if(y.rows() > 0 && y_hat.rows() > 0)
+        if(_y_used.rows() > 0 && _y_hat_used.rows() > 0)
         {
             //Conditioning: K = Pxy/Py
             xy_mat K = Py_hat.ldlt().solve(Pxy_hat.transpose()).transpose();
 
-            state_density.mean() = x + (K*(y - y_hat)).template cast<typename state_density_type::scalar_type>();
+            state_density.mean() = x + (K*(_y_used - _y_hat_used)).template cast<typename state_density_type::scalar_type>();
             state_density.covariance() = Px - (K*Py_hat*K.transpose()).template cast<typename state_density_type::scalar_type>();
 
             //Apply Constaints
@@ -66,12 +63,15 @@ public:
         }
     }
 
-    const y_vec& predicted_measurement() const { return _y_hat; }
+    const y_vec& used_predicted_measurements() const { return _y_hat_used; }
+
+    const y_vec& used_actual_measurements() const { return _y_used; }
 
 private:
     measurement_model_type& _model;
     propagater_type _propagater;
-    y_vec _y_hat;
+    y_vec _y_hat_used;
+    y_vec _y_used;
 };
 
 }
