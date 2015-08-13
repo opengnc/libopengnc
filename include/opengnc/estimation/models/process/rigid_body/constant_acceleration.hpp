@@ -11,7 +11,6 @@ namespace rigid_body {
 
 template<typename state_policy, typename covariance_policy>
 class constant_acceleration
-        : state_policy
 {
 public:
     enum { input_length = state_policy::state_vector_length, output_length = state_policy::state_vector_length };
@@ -35,13 +34,11 @@ public:
 
     y_vec operator() (const x_vec& x)
     {
-        typedef Eigen::Matrix<input_scalar_type,Eigen::Dynamic,1> VectorXs;
-
-        using namespace Eigen;
+		using namespace Eigen;
 
         auto thetanb  = state_policy::thetanb(x);
         auto vBNb = state_policy::vBNb(x);
-        auto omegaBnb = state_policy::omegaBnb(x);
+		auto omegaBNb = state_policy::omegaBNb(x);
 
         auto Rnb = state_policy::rotation(thetanb);
         auto Tnb = state_policy::transform(thetanb);
@@ -52,20 +49,17 @@ public:
 
         //Attitude dynamics
         auto dthetanb = thetanb;
-        dthetanb = Tnb*omegaBnb;
+		dthetanb = Tnb*omegaBNb;
 
         //Velocity dynamics
         auto dvBNb = vBNb;
         dvBNb.setConstant(0);
 
-        auto domegaBNb = omegaBnb;
+		auto domegaBNb = omegaBNb;
         domegaBNb.setConstant(0);
 
-        //IMU bias dynamics
-        VectorXs dbiasIMU = VectorXs::Zero(state_policy::parameters_length());
-
         x_vec dx;
-        state_policy::pack_state(dx, drBNn, dthetanb, dvBNb, domegaBNb, dbiasIMU);
+		state_policy::pack_state(dx, drBNn, dthetanb, dvBNb, domegaBNb);
 
         y_vec x_hat = x + _timestep*dx;
         state_policy::apply_constraints(x_hat);

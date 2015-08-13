@@ -10,7 +10,7 @@ template<typename scalar_type, int size>
 struct no_constraint_policy
 {
     typedef Eigen::Matrix<scalar_type, size, 1> x_vec;
-    void apply(x_vec&) { }
+	static void apply_constraints(x_vec&) { }
 };
 
 }

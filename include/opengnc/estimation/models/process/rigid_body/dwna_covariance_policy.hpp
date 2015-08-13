@@ -14,7 +14,7 @@ namespace rigid_body {
  * page 272. Assumes state vector x is packed as {pos, vel, parameters}
  */
 template<typename _state_policy>
-struct dwna_covariance_policy : private _state_policy
+struct dwna_covariance_policy
 {
     typedef Eigen::Matrix<typename _state_policy::scalar_type, _state_policy::state_vector_length, 1> x_vec;
     typedef Eigen::Matrix<typename _state_policy::scalar_type, _state_policy::state_vector_length, _state_policy::state_vector_length> x_mat;
