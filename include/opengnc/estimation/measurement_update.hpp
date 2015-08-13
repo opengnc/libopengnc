@@ -38,12 +38,13 @@ public:
         xy_mat Pxy_hat;
 
         _propagater.init(x, Px);
-        _propagater.propagate(_model, _y_hat_used, Py_hat, Pxy_hat);
+        _propagater.propagate(_model, _y_hat, Py_hat, Pxy_hat);
+        _y_hat_used = _y_hat;
 
         _y_used = measurement_density.mean();
         const y_mat& R = measurement_density.covariance();
 
-        if(_y_used.rows() > 0 && _y_hat_used.rows() > 0)
+        if(_y_used.rows() > 0 && _y_hat.rows() > 0)
         {
             //Add measurement noise
             Py_hat +=  R;
@@ -63,6 +64,8 @@ public:
         }
     }
 
+    const y_vec& predicted_measurements() const { return _y_hat; }
+
     const y_vec& used_predicted_measurements() const { return _y_hat_used; }
 
     const y_vec& used_actual_measurements() const { return _y_used; }
@@ -70,6 +73,7 @@ public:
 private:
     measurement_model_type& _model;
     propagater_type _propagater;
+    y_vec _y_hat;
     y_vec _y_hat_used;
     y_vec _y_used;
 };
