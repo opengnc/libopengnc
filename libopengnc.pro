@@ -26,7 +26,8 @@ HEADERS += \
     include/opengnc/estimation/models/process/rigid_body/dwna_covariance_policy.hpp \
     include/opengnc/estimation/no_constraint_policy.hpp \
     include/opengnc/estimation/state_policy_6dof.hpp \
-    include/opengnc/estimation/no_exclusion_policy.hpp
+    include/opengnc/estimation/no_exclusion_policy.hpp \
+    include/opengnc/control/pid.hpp
 
 
 
