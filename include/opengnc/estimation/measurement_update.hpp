@@ -24,6 +24,8 @@ class measurement_update
     typedef Eigen::Matrix<output_scalar_type, ny, ny> y_mat;
     typedef Eigen::Matrix<output_scalar_type, nx, ny> xy_mat;
 
+    using exclusion_param = typename measurement_exclusion_policy::param_type;
+
 public:
     measurement_update(measurement_model_type& model)
         : _model(model)
@@ -48,7 +50,7 @@ public:
         {
             //Add measurement noise
             Py_hat +=  R;
-            measurement_exclusion_policy::apply_exclusions(_y_used, _y_hat_used, Py_hat, Pxy_hat);
+            measurement_exclusion_policy::apply_exclusions(_y_used, _y_hat_used, Py_hat, Pxy_hat, _exclusion_param);
         }
 
         if(_y_used.rows() > 0 && _y_hat_used.rows() > 0)
@@ -64,6 +66,8 @@ public:
         }
     }
 
+    void set_exclusion_parameters(exclusion_param param) { _exclusion_param = param; }
+
     const y_vec& predicted_measurements() const { return _y_hat; }
 
     const y_vec& used_predicted_measurements() const { return _y_hat_used; }
@@ -76,6 +80,7 @@ private:
     y_vec _y_hat;
     y_vec _y_hat_used;
     y_vec _y_used;
+    exclusion_param _exclusion_param;
 };
 
 }
