@@ -92,8 +92,6 @@ public:
 		return Rot;
 	}
 
-
-
 	static const Matrix4x3s transform(const Vector4s& thetanb)
 	{
 		Matrix4x3s T;
@@ -129,6 +127,19 @@ public:
 				V(1, idx).real(),
 				V(2, idx).real();
 		return q;
+	}
+
+	template <int m, int n>
+	static Eigen::Matrix<scalar, m*n, 1> vectorise(const Eigen::Matrix<scalar, m, n>& X)
+	{
+		Eigen::Matrix<scalar, m*n, 1> Y;
+
+		for (int j = 0; j < n; ++j)
+		{
+			Y.template segment<m>(m*j) = X.template block<m,1>(0,j);
+		}
+
+		return Y;
 	}
 };
 
