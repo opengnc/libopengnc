@@ -144,7 +144,6 @@ public:
         }
     }
 
-
     const y_vec& predicted_measurements() const { return _y_hat; }
 
     const y_vec& used_predicted_measurements() const { return _y_hat_used; }
