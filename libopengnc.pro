@@ -27,7 +27,9 @@ HEADERS += \
     include/opengnc/estimation/no_constraint_policy.hpp \
     include/opengnc/estimation/state_policy_6dof.hpp \
     include/opengnc/estimation/no_exclusion_policy.hpp \
-    include/opengnc/control/pid.hpp
+    include/opengnc/control/pid.hpp \
+    include/opengnc/estimation/measurement_model_traits.hpp \
+    include/opengnc/estimation/measurement_condition.hpp
 
 
 
