@@ -32,6 +32,9 @@ public:
 private:
     vec_type _mean;
     mat_type _covariance;
+
+public:
+     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
 }
