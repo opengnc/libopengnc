@@ -24,22 +24,26 @@ struct dwna_covariance_policy
     {
         typedef Eigen::Matrix<typename _state_policy::scalar_type, 6, 6> Matrix6s;
         typedef Eigen::Matrix<typename _state_policy::scalar_type, _state_policy::state_vector_length, 6> Gamma_mat;
-        typedef Eigen::Matrix<typename _state_policy::scalar_type, Eigen::Dynamic, Eigen::Dynamic> MatrixXs;
 
         float T = timestep;
         auto thetanb  = _state_policy::thetanb(x);
         auto Rnb = _state_policy::rotation(thetanb);
         auto Tnb = _state_policy::transform(thetanb);
 
-        MatrixXs J = MatrixXs::Zero(Rnb.rows()+Tnb.rows(),Rnb.cols()+Tnb.cols());
-        J.block(0,0,Rnb.rows(),Rnb.cols()) = Rnb;
-        J.block(Rnb.rows(),Rnb.cols(),Tnb.rows(),Tnb.cols()) = Tnb;
+        typedef Eigen::Matrix<typename _state_policy::scalar_type,
+                Rnb.RowsAtCompileTime + Tnb.RowsAtCompileTime,
+                Rnb.ColsAtCompileTime + Tnb.ColsAtCompileTime> J_mat;
+
+        J_mat J = J_mat::Zero();
+        J.block<Rnb.rows(),Rnb.cols()>(0,0) = Rnb;
+        J.block<Tnb.rows(),Tnb.cols()>(Rnb.rows(),Rnb.cols()) = Tnb;
+
 
         Gamma_mat Gamma;
         if (_state_policy::state_vector_length == Eigen::Dynamic) Gamma.resize(x.size(), 6);
 
         Gamma.setZero();
-        Gamma.block(0,0,J.rows(),J.cols()) = 0.5*T*T*J;
+        Gamma.block(0,0,J.rows(),J.cols()) = static_cast<typename _state_policy::scalar_type>(0.5)*T*T*J;
         Gamma.block(J.rows(),0,6,6) = T*Matrix6s::Identity();
 
         x_mat Q = Gamma*Q_input_diag.asDiagonal()*Gamma.transpose();
