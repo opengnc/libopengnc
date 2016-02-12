@@ -1,9 +1,7 @@
 #ifndef OPENGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
 #define OPENGNC_ESTIMATION_UNSCENTED_TRANSFORM_HPP
 
-#include <stdexcept>
 #include <Eigen/Core>
-#include <boost/asio.hpp>
 
 namespace opengnc {
 namespace estimation {
