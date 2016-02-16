@@ -16,15 +16,15 @@ public:
     enum { state_vector_length = 16 };
     enum { parameter_vector_length = 3 };
 
-    static const typename parent::Vector3s gbBNb(const typename parent::XVector& x)
+	static const typename parent::Vector3s gbBNi(const typename parent::XVector& x)
     {
         return x.template segment<3>(parent::state_vector_length);
     }
 
     static void pack_parameters(typename parent::XVector& x,
-                                const typename parent::Vector3s& gbBNb)
+								const typename parent::Vector3s& gbBNi)
     {
-        x.template segment<3>(parent::state_vector_length) = gbBNb;
+		x.template segment<3>(parent::state_vector_length) = gbBNi;
     }
 };
 

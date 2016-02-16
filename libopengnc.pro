@@ -31,7 +31,9 @@ HEADERS += \
     include/opengnc/estimation/measurement_model_traits.hpp \
     include/opengnc/estimation/measurement_condition.hpp \
     include/opengnc/common/math.hpp \
-    include/opengnc/estimation/state_policy_6dof_with_gyro.hpp
+    include/opengnc/estimation/state_policy_6dof_with_gyro.hpp \
+    include/opengnc/estimation/models/measurement/gyroscope.hpp \
+    include/opengnc/estimation/models/measurement/accelerometer.hpp
 
 
 
