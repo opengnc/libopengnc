@@ -91,13 +91,13 @@ public:
         _sigma_x.col(2*n) = x;
 
         // mean weights
-        double wm = 1.0/(2*(n+_lambda));
-        _wm = VectorXd::Constant(_nsigma, wm);
+		output_scalar_type wm = 1.0/(2*(n+_lambda));
+		_wm = w_vec::Constant(_nsigma, wm);
         _wm(2*n)=_lambda/(n+_lambda);
 
         // covariance weights
         _wc = _wm;
-        _wc(2*n) += 1.0 - _alpha*_alpha + _beta;
+		_wc(2*n) += static_cast<output_scalar_type>(1.0 - _alpha*_alpha + _beta);
 
         _init = true;
     }
