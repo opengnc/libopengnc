@@ -1,7 +1,7 @@
 #ifndef OPENGNC_ESTIMATION_MODELS_PROCESS_RIGID_BODY_DWNA_COVARIANCE_POLICY_HPP
 #define OPENGNC_ESTIMATION_MODELS_PROCESS_RIGID_BODY_DWNA_COVARIANCE_POLICY_HPP
 
-#include <Eigen/Core>
+#include <opengnc/common/math.hpp>
 
 namespace opengnc {
 namespace estimation {
@@ -27,17 +27,16 @@ struct dwna_covariance_policy
 
         float T = timestep;
         auto thetanb  = _state_policy::thetanb(x);
-        auto Rnb = _state_policy::rotation(thetanb);
-        auto Tnb = _state_policy::transform(thetanb);
+        auto Rnb = common::math::rotationQuaternion(thetanb);
+        auto Tnb = common::math::transform(thetanb);
 
         typedef Eigen::Matrix<typename _state_policy::scalar_type,
                 Rnb.RowsAtCompileTime + Tnb.RowsAtCompileTime,
                 Rnb.ColsAtCompileTime + Tnb.ColsAtCompileTime> J_mat;
 
         J_mat J = J_mat::Zero();
-        J.block<Rnb.rows(),Rnb.cols()>(0,0) = Rnb;
-        J.block<Tnb.rows(),Tnb.cols()>(Rnb.rows(),Rnb.cols()) = Tnb;
-
+        J.template block<Rnb.RowsAtCompileTime, Rnb.ColsAtCompileTime>(0,0) = Rnb;
+        J.template block<Tnb.RowsAtCompileTime, Tnb.ColsAtCompileTime>(Rnb.rows(),Rnb.cols()) = Tnb;
 
         Gamma_mat Gamma;
         if (_state_policy::state_vector_length == Eigen::Dynamic) Gamma.resize(x.size(), 6);

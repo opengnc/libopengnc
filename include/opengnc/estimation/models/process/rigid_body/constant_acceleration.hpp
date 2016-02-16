@@ -1,7 +1,7 @@
 #ifndef OPENGNC_ESTIMATION_MODELS_PROCESS_RIGID_BODY_CONSTANT_ACCELERATION_HPP
 #define OPENGNC_ESTIMATION_MODELS_PROCESS_RIGID_BODY_CONSTANT_ACCELERATION_HPP
 
-#include <Eigen/Core>
+#include <opengnc/common/math.hpp>
 
 namespace opengnc {
 namespace estimation {
@@ -34,14 +34,15 @@ public:
 
     y_vec operator() (const x_vec& x)
     {
+		using namespace opengnc::common;
 		using namespace Eigen;
 
         auto thetanb  = state_policy::thetanb(x);
         auto vBNb = state_policy::vBNb(x);
 		auto omegaBNb = state_policy::omegaBNb(x);
 
-        auto Rnb = state_policy::rotation(thetanb);
-        auto Tnb = state_policy::transform(thetanb);
+		auto Rnb = math::rotationQuaternion(thetanb);
+		auto Tnb = math::transform(thetanb);
 
         // Position dynamics
         auto drBNn = vBNb;
