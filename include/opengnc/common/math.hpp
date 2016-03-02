@@ -101,6 +101,47 @@ struct math
 
         return Y;
     }
+
+    template<typename scalar>
+    static Eigen::Matrix<scalar, 3, 1> eulerRotation(const Eigen::Matrix<scalar, 3, 3>& R)
+    {
+         Eigen::Matrix<scalar, 3, 1> euler;
+
+        auto& phi = euler(0);
+        auto& theta = euler(1);
+        auto& psi = euler(2);
+
+        theta = -asin(R(2,0));
+        auto cos_theta = cos(theta);
+        psi = atan2(R(1,0)/cos_theta, R(0,0)/cos_theta);
+        phi = atan2(R(2,1)/cos_theta, R(2,2)/cos_theta);
+
+        return euler;
+    }
+
+    template<typename scalar>
+    static Eigen::Matrix<scalar, 6, 1> euler6Rotation(const Eigen::Matrix<scalar, 3, 3>& R)
+    {
+         Eigen::Matrix<scalar, 6, 1> euler6;
+
+        auto& sin_phi = euler6(0);
+        auto& cos_phi = euler6(1);
+        auto& sin_theta = euler6(2);
+        auto& cos_theta = euler6(3);
+        auto& sin_psi = euler6(4);
+        auto& cos_psi = euler6(5);
+
+        auto euler = eulerRotation(R);
+
+        sin_theta = sin(euler(1));
+        cos_theta = cos(euler(1));
+        sin_phi = sin(euler(0));
+        cos_phi = cos(euler(0));
+        sin_psi = sin(euler(2));
+        cos_psi = cos(euler(2));
+
+        return euler6;
+    }
 };
 
 }
