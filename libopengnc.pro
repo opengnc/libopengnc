@@ -33,7 +33,9 @@ HEADERS += \
     include/opengnc/common/math.hpp \
     include/opengnc/estimation/state_policy_6dof_with_gyro.hpp \
     include/opengnc/estimation/models/measurement/gyroscope.hpp \
-    include/opengnc/estimation/models/measurement/accelerometer.hpp
+    include/opengnc/estimation/models/measurement/accelerometer.hpp \
+    include/opengnc/estimation/measurement_update_singleton_container.hpp \
+    include/opengnc/estimation/unscented_kalman_filter.hpp
 
 
 
