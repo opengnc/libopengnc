@@ -136,6 +136,11 @@ protected:
             _sigma_y.resize(ny, _sigma_x.cols());
         }
 
+        if (ny == Eigen::Dynamic) {
+            _sigma_y.resize(0,_sigma_x.cols());
+        }
+
+
         for (int i = 0; i <_sigma_x.cols(); ++i) {
           const x_vec& xi = static_cast<const x_vec&>(_sigma_x.col(i));
           y_vec yi = model(xi);
