@@ -54,8 +54,8 @@ public:
     void measurement_update(typename measurement_traits::density_type& measurement_density)
     {
         auto& model = container::template get_measurement_model<measurement_traits>();
-        container::template get_measurement_update<measurement_traits, state_density_type>();
-       // update(model, state_density, measurement_density);
+        auto& update = container::template get_measurement_update<measurement_traits, state_density_type>();
+        update(state_density, measurement_density);
     }
 
 
