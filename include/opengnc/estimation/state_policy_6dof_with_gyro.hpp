@@ -10,21 +10,21 @@ template <typename scalar>
 class state_policy_6dof_with_gyro : public state_policy_6dof<scalar, 16>
 {
 private:
-    using parent = state_policy_6dof<scalar, 16>;
+    using base = state_policy_6dof<scalar, 16>;
 
 public:
     enum { state_vector_length = 16 };
     enum { parameter_vector_length = 3 };
 
-	static const typename parent::Vector3s gbBNi(const typename parent::XVector& x)
+    static const typename base::Vector3s gbBNi(const typename base::XVector& x)
     {
-        return x.template segment<3>(parent::state_vector_length);
+        return x.template segment<3>(base::state_vector_length);
     }
 
-    static void pack_parameters(typename parent::XVector& x,
-								const typename parent::Vector3s& gbBNi)
+    static void pack_parameters(typename base::XVector& x,
+                                const typename base::Vector3s& gbBNi)
     {
-		x.template segment<3>(parent::state_vector_length) = gbBNi;
+        x.template segment<3>(base::state_vector_length) = gbBNi;
     }
 };
 
