@@ -58,6 +58,12 @@ public:
         update(state_density, measurement_density);
     }
 
+    template<typename measurement_traits>
+    const typename measurement_traits::density_type::vec_type& get_last_measurement_prediction()
+    {
+        return container::template get_measurement_update<measurement_traits, state_density_type>().predicted_measurements();
+    }
+
 
 private:
     uint64_t last_updated_ms;
