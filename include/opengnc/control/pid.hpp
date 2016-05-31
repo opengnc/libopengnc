@@ -202,6 +202,20 @@ public:
         z[1] = 0;
         uPrev = 0;
     }
+
+    void reset (scalar_type _x, scalar_type _ref, scalar_type u, scalar_type _dT)
+    {
+        if (_dT != T)
+        {
+            T = _dT;
+            calculateParameters();
+        }
+
+        z[0] = 0;
+        z[1] = (_ref - _x - u / Cinf)/Cd[1];
+        uPrev = u;
+    }
+
 	Vector2s& getState()  { return z; }
 	scalar_type& getUPrev()  { return uPrev; }
 
