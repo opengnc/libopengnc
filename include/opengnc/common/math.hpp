@@ -103,6 +103,24 @@ struct math
     }
 
     template<typename scalar>
+    static Eigen::Matrix<scalar, 3, 3> rotationEuler(const Eigen::Matrix<scalar, 3, 1>& v)
+    {
+        scalar sphi = std::sin(v[0]);
+        scalar cphi = std::cos(v[0]);
+        scalar ctheta = std::cos(v[1]);
+        scalar stheta = std::sin(v[1]);
+        scalar cpsi = std::cos(v[2]);
+        scalar spsi = std::sin(v[2]);
+
+        Eigen::Matrix<scalar, 3, 3> R;
+        R << cpsi*ctheta, -spsi*cphi + cpsi*stheta*sphi,  spsi*sphi + cpsi*cphi*stheta,
+                spsi*ctheta,  cpsi*cphi + spsi*stheta*sphi, -cpsi*sphi + spsi*cphi*stheta,
+                -stheta,                   ctheta*sphi,                   ctheta*cphi;
+
+        return R;
+    }
+
+    template<typename scalar>
     static Eigen::Matrix<scalar, 3, 1> eulerRotation(const Eigen::Matrix<scalar, 3, 3>& R)
     {
          Eigen::Matrix<scalar, 3, 1> euler;
