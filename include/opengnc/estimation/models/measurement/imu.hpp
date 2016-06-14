@@ -23,14 +23,14 @@ public:
 
     imu()
         : mag_scale(1)
-        , mag_inc(1, 0, 0)
+        , mag_vector(1, 0, 0)
         , Rib(Matrix3s::Identity())
         , rIBb(0, 0, 0)
         , gn(0, 0, -9.8)
     { }
 
-    void set_mage_scale(double value) { mag_scale = value; }
-    void set_mag_inc(const Vector3s& value) { mag_inc = value; }
+    void set_mag_scale(double value) { mag_scale = value; }
+    void set_mag_vector(const Vector3s& value) { mag_vector = value; }
     void set_Rib(const Matrix3s& value) { Rib = value; }
     void set_rIBb(const Vector3s& value) { rIBb = value; }
     void set_gn(const Vector3s& value) { gn = value; }
@@ -45,7 +45,7 @@ public:
 
         Vector3s acc = Rib*(math::Skew(omegaBNb)*rIBb - Rnb.transpose()*gn);
         Vector3s gyro = Rib*(omegaBNb) + gbBNi;
-        Vector3s mag =  Rib*Rnb.transpose()*(mag_scale*mag_inc);
+        Vector3s mag =  Rib*Rnb.transpose()*(mag_scale*mag_vector);
 
         YVector y;
         y << acc,
@@ -58,7 +58,7 @@ public:
 
 protected:
     double  mag_scale;
-    Vector3s mag_inc;
+    Vector3s mag_vector;
     Matrix3s Rib;
     Vector3s rIBb;
     Vector3s gn;
