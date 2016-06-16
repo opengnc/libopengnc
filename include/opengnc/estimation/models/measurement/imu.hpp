@@ -26,7 +26,7 @@ public:
         , mag_vector(1, 0, 0)
         , Rib(Matrix3s::Identity())
         , rIBb(0, 0, 0)
-        , gn(0, 0, -9.8)
+        , gn(0, 0, 9.8)
     { }
 
     void set_mag_scale(double value) { mag_scale = value; }
@@ -43,7 +43,7 @@ public:
         const auto omegaBNb = state_policy::omegaBNb(x);
         const auto gbBNi = state_policy::gbBNi(x);
 
-        Vector3s acc = Rib*(math::Skew(omegaBNb)*rIBb - Rnb.transpose()*gn);
+        Vector3s acc =  Rib*(math::Skew(omegaBNb)*rIBb - Rnb.transpose()*gn);
         Vector3s gyro = Rib*(omegaBNb) + gbBNi;
         Vector3s mag =  Rib*Rnb.transpose()*(mag_scale*mag_vector);
 
